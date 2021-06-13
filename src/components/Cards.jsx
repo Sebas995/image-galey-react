@@ -3,22 +3,30 @@ import Card from './Card';
 
 const Cards = () => {
 
-    const [images, setImages] = useState({});
+    const [images, setImages] = useState([{
+        id: 2133,
+        urls: {
+            regular: "ahre"
+        }
+    }]);
     
     const peticion = async () => {
-        const res = await fetch("https://api.unsplash.com/photos/random?client_id=cIWV9te0YZ-OqbSid4yLnmP9gkNL78ttu7CDXwiM39I");
+        const res = await fetch("https://api.unsplash.com/photos?client_id=cIWV9te0YZ-OqbSid4yLnmP9gkNL78ttu7CDXwiM39I");
         const data = await res.json();
+        //Los sets son asyncronos
         setImages(data);
-        console.log(images);
+        console.log(images)
     }; 
 
     useEffect(() => {
-        peticion();
-    }, [])
+        peticion(); 
+    }, []);
 
     return (
         <>
-            <Card img={images}/>
+        {images.map((img) => {
+            return <Card key={img.id} img={img.urls.regular}/>
+        })}
         </>
     )
 }
