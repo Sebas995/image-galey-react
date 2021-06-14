@@ -1,33 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Card from './Card';
+import Loading from './Loading';
+import FormImg from './FormImg';
+import { useFetchImages } from '../hooks/useFetchImages';
 
 const Cards = () => {
 
-    const [images, setImages] = useState([{
-        id: 2133,
-        urls: {
-            regular: "ahre"
-        }
-    }]);
-    
-    const peticion = async () => {
-        const res = await fetch("https://api.unsplash.com/photos?client_id=cIWV9te0YZ-OqbSid4yLnmP9gkNL78ttu7CDXwiM39I");
-        const data = await res.json();
-        //Los sets son asyncronos
-        setImages(data);
-        console.log(images)
-    }; 
-
-    useEffect(() => {
-        peticion(); 
-    }, []);
+    const [images, loading, handleSubmit] = useFetchImages();
 
     return (
-        <>
-        {images.map((img) => {
-            return <Card key={img.id} img={img.urls.regular}/>
-        })}
-        </>
+        <div className="text-center">
+           
+            <FormImg handleSubmit={handleSubmit}/>
+            <hr />
+            {loading && <Loading/>}
+
+            <div className="row">
+                {images.map((img) => {
+                    return (<div key={img.id} className="col">
+                        <Card img={img.urls.regular}/>
+                    </div>);
+                })}
+            </div>
+        </div>
     )
 }
 
